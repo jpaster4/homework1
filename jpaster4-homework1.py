@@ -68,11 +68,10 @@ if uploaded_file is not None:
 
         # Pre-process
         data = data.dropna()
-        le = LabelEncoder()
 
         for col in data.columns:
-            if data[col].dtype == "object":
-                data[col] = le.fit_transform(data[col].astype(str))
+            if not pd.api.types.is_numeric_dtype(data[col]):
+                data[col] = LabelEncoder().fit_transform(data[col].astype(str))
 
         y = data[target]
         X = data[features]
